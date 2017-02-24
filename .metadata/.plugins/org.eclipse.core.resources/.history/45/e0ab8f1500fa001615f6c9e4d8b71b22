@@ -1,0 +1,56 @@
+import java.util.List;
+import java.util.Set;
+import java.util.Iterator;
+
+
+public class main {
+	
+	public static void exercise1_1() {
+		//ShingleString Test
+		ShingleSet test1 = new ShingleSet(2);
+		test1.shingleString("abcdabd");
+		/*
+		Iterator i = test1.iterator();
+		while(i.hasNext()){
+			System.out.println(i.next());
+		}
+		*/
+		
+		//Jaccard Test
+		/*
+		ShingleSet test2 = new ShingleSet(2);
+		test2.shingleString("absadasdasdasd");
+		System.out.printf("%f", test1.jaccardDistance(test2));
+		*/
+		ShingleSet s1 = new ShingleSet(4);
+		s1.shingleString("The plane was ready for touch down");
+		ShingleSet s2 = new ShingleSet(4);
+		s2.shingleString("The quarterback scored a touchdown");
+		System.out.println(s1.jaccardDistance(s2));
+		
+		 
+		
+	}
+	
+	public static void exercise1_2() {
+		// ADD CODE HERE
+		
+		//exercise1_3(mh);
+	}
+	
+	public static void exercise1_3(MinHash mh) {
+		// ADD CODE HERE
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// exercise 1.1
+		exercise1_1();
+		
+		// exercise 1.2
+		exercise1_2();
+	}
+
+}
