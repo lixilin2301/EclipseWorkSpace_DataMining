@@ -1,0 +1,37 @@
+
+public class main {
+
+	public static void perceptron() {
+		// add code here
+		Dataset dataa = new Dataset("data/gaussian.txt",true);
+		Perceptron perceptron = new Perceptron(1);
+		PerceptronPlotter plotter = new PerceptronPlotter("Class_neg","Class_pos");
+		
+		perceptron.updateWeights(dataa);
+		plotter.plotData(dataa, perceptron);
+	}
+
+	public static void perceptronDigits() {
+		// add code here
+		Dataset datab = new Dataset("data/train digits.txt",true);
+		DigitFrame df_origin = new DigitFrame("DigitFrame");
+		System.out.print(datab.get(5).size());
+//		df_origin.showImage(datab.get(5), 8, 8);
+	}
+
+	public static void nearestNeighbour() {
+		// add code here
+	}
+	
+	public static void nearestNeighbourDigits() {
+		// add code here
+	}
+
+	public static void main(String[] args) {
+//		perceptron();
+		perceptronDigits();
+		//nearestNeighbour();
+		//nearestNeighbourDigits();
+	}
+
+}
