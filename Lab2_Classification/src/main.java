@@ -44,17 +44,38 @@ public class main {
 
 	public static void nearestNeighbour() {
 		// add code here
+		int k = 3;
+		NearestNeighbour nn = new NearestNeighbour();
+		NearestNeighbourPlotter nnp = new NearestNeighbourPlotter(k);
+		nn.readData("data/banana.txt");
+		nnp.plotData(nn);
 	}
 	
 	public static void nearestNeighbourDigits() {
 		// add code here
+		int k = 3;
+		NearestNeighbour nn = new NearestNeighbour();
+		nn.readData("data/train_digits.txt");
+		Dataset dsTest = new Dataset("data/test_digits.txt", false);
+		int sizeTrain = dsTest.size();
+		int countCorrect = 0;
+		for(FeatureVector fv : dsTest){
+			if (nn.predict(fv,k) == fv.getLabel()) {
+				countCorrect++;
+			} 
+			else {
+				DigitFrame df_orig = new DigitFrame("Wrong", fv, 8, 8);
+			}
+		}
+		
+		System.out.println((double)countCorrect / (double)sizeTrain);
 	}
 
 	public static void main(String[] args) {
-//		perceptron();
-		perceptronDigits();
-		//nearestNeighbour();
-		//nearestNeighbourDigits();
+		//perceptron();
+		//perceptronDigits();
+		nearestNeighbour();
+//		nearestNeighbourDigits();
 	}
 
 }
