@@ -46,7 +46,27 @@ public class NearestNeighbour {
 		int label = -1;
 		
 		// add code here
-
+		List<Measurement> ml = new ArrayList<Measurement>();
+		for (FeatureVector fv : dataset) {
+			Measurement meas = new Measurement(fv,fv.distance(features));
+			ml.add(meas);
+		}
+		Collections.sort(ml);
+		int[] labels= new int[k+1];
+		for (int i = 0; i < k+1; i++) {
+			labels[i] = 0;
+		}
+		System.out.println(ml.get(0).getFeatureVector().getLabel());  
+		for (int i = 0; i < k; i++) {
+			labels[ml.get(0).getFeatureVector().getLabel()]++;
+		}
+		int max = 0;
+		for (int i = 0; i < k+1; i++) {
+			if (labels[i] > max) {
+				max = labels[i];
+				label = i;
+			}
+		}
 		return label;
 	}
 }
