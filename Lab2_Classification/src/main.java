@@ -21,11 +21,11 @@ public class main {
 //		DigitFrame df_origin2 = new DigitFrame("Data No90",data_train.get(90), 8, 8);
 		
 		//Train
-		int iter = 2;		
+		int iter = 5;		
 		for(int i=0;i<iter;i++){
 			perceptron.updateWeights(data_train);
 		}
-//		DigitFrame df_origin2 = new DigitFrame("Weight",perceptron.getWeights(),8,8);
+		DigitFrame df_origin2 = new DigitFrame("Weight",perceptron.getWeights(),8,8);
 		
 		//Test
 		Dataset data_test = new Dataset("data/test_digits.txt",true);
@@ -38,8 +38,19 @@ public class main {
 				DigitFrame df_orig = new DigitFrame("Wrong",fv,8,8);
 			}
 		}
-		System.out.println((double)count_correct/(double)size_train);
-					
+		System.out.println(1-(double)count_correct/(double)size_train);
+		
+		//Train Test
+//		int size_train = data_train.size();
+//		int count_correct= 0;
+//		for(FeatureVector fv:data_train){
+//			if(perceptron.predict(fv)==fv.label){
+//				count_correct++;
+//			}else{
+//				DigitFrame df_orig = new DigitFrame("Wrong",fv,8,8);
+//			}
+//		}
+//		System.out.println((double)count_correct/(double)size_train);
 	}
 
 	public static void nearestNeighbour() {
@@ -68,14 +79,14 @@ public class main {
 			}
 		}
 		
-		System.out.println((double)countCorrect / (double)sizeTrain);
+		System.out.println(1-(double)countCorrect / (double)sizeTrain);
 	}
 
 	public static void main(String[] args) {
-		//perceptron();
-		//perceptronDigits();
+//		perceptron();
+//		perceptronDigits();
 		nearestNeighbour();
-//		nearestNeighbourDigits();
+		nearestNeighbourDigits();
 	}
 
 }

@@ -60,7 +60,7 @@ public class PageRank {
 			e.printStackTrace();
 		}
 		// Print the data object and check to see how the data is stored.
-		System.out.println(data);
+//		System.out.println(data);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class PageRank {
 		Matrix result = new Matrix(data.size(), 1);
 
         // FILL IN YOUR CODE HERE
-		System.out.println();
+//		System.out.println();
 		for (int r = 0; r < data.size(); r++) {
 			result.set(r, 0, 1.0/data.size());
 		}

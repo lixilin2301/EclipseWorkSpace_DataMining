@@ -29,9 +29,17 @@ public class TaxationPageRank extends PageRank {
 		// the tools
 		Matrix randomSurfer = null;
 		Matrix transitionMatrix = null;
-
+		Matrix eleVector;
+		
         // FILL IN YOUR CODE HERE
-
+		transitionMatrix = this.constructTransitionMatrix();
+		randomSurfer = this.getRandomSurferVector();
+		eleVector  = this.getEleVector();
+//		System.out.println(eleVector);
+		for (int i = 0; i < iterations; i++) {
+			randomSurfer = ( (transitionMatrix.multiply(beta)).dot(randomSurfer) ).add( eleVector.multiply((1-beta)/data.size()) ) ;
+		}
+		
 		// fill the results, match names with PageRank values
 		int count = 0;
 		for (String s: data.keySet()) {
@@ -39,6 +47,13 @@ public class TaxationPageRank extends PageRank {
 			count++;
 		}
 
+		return result;
+	}
+	public Matrix getEleVector() {
+		Matrix result = new Matrix(data.size(), 1);
+		for (int r = 0; r < data.size(); r++) {
+			result.set(r, 0, 1);
+		}
 		return result;
 	}
 }

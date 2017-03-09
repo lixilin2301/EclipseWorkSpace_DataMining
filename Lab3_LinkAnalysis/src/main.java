@@ -11,14 +11,24 @@ public class main {
 
 	public static void main(String[] args) {
 
-        // FILL IN YOUR CODE HERE
+        // PageRank Step 1-8
 		PageRank pr = new PageRank();
 		pr.importData("data/example2.txt");
 		Matrix cm = pr.constructTransitionMatrix();
 		System.out.println(cm);
-		Matrix rsv = pr.getRandomSurferVector();
-		System.out.println(rsv);
-		System.out.println(pr.calculatePageRank(10));
+		System.out.println("PageRank result: " + pr.calculatePageRank(10) + "\n");
+		
+		// TaxPageRank Step 9
+		TaxationPageRank taxPr = new TaxationPageRank(0.8);
+		taxPr.importData("data/example2.txt");
+		System.out.println("TaxPageRank result: " + taxPr.calculatePageRank(10) + "\n");
+		
+		// TaxPageRank Step 10
+		TaxationPageRank taxPr_air = new TaxationPageRank(1);
+		taxPr_air.importData("data/flight_data.txt");
+		Map<String, Double> result_air = taxPr_air.calculatePageRank(100);
+		result_air = sortByValues(result_air);
+		System.out.println("Air TaxPageRank result: " + result_air);
 	}
 		
 	/*
