@@ -13,7 +13,7 @@ public class main {
 
         // PageRank Step 1-8
 		PageRank pr = new PageRank();
-		pr.importData("data/example.txt");
+		pr.importData("data/example1.txt");
 		Matrix cm = pr.constructTransitionMatrix();
 		System.out.println(cm);
 		System.out.println("PageRank result: " + pr.calculatePageRank(10) + "\n");

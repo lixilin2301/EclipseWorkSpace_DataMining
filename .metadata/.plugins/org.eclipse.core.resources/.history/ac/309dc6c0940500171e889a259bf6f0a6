@@ -19,7 +19,7 @@ public class main {
 		System.out.println("PageRank result: " + pr.calculatePageRank(10) + "\n");
 		
 		// TaxPageRank Step 9
-		TaxationPageRank taxPr = new TaxationPageRank(0.8);
+		TaxationPageRank taxPr = new TaxationPageRank(0);
 		taxPr.importData("data/example2.txt");
 		System.out.println("TaxPageRank result: " + taxPr.calculatePageRank(10) + "\n");
 		
