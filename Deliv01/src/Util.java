@@ -1,5 +1,6 @@
 import java.lang.Math;
 import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -7,16 +8,59 @@ public class Util {
 	
 	public static double calculateCosine(Map<Integer,Double> userX, Map<Integer,Double> userY, int nM) {
 		// Compute cosine similarity between two users
-		double avg_x =calculateAverage(userX);
-		double avg_y =calculateAverage(userY);
-		if(userX.isEmpty()||userY.isEmpty()||avg_x==0.0||avg_y==0.0){
-			return Double.MIN_VALUE;
+		if(userX.isEmpty()||userY.isEmpty()){
+			return -100;
 		}
-//		System.out.println(calculateAverage(userX)+"..."+ calculateAverage(userY));
-//		Map<Integer,Double> userX_sub = subtractScalarVector(avg_x,userX);
-//		Map<Integer,Double> userY_sub = subtractScalarVector(avg_y,userY);
-//		return innerProduct(userX_sub, userY_sub)/(euclideanNorm(userX_sub)*euclideanNorm(userY_sub));
-		return innerProduct(userX, userY)/(euclideanNorm(userX)*euclideanNorm(userY));
+		Map<Integer,Double> userX_sub = new HashMap<Integer,Double>(userX);
+		userX_sub = subtractScalarVector(calculateAverage(userX_sub),userX_sub);
+		Map<Integer,Double> userY_sub = new HashMap<Integer,Double>(userY);
+		userY_sub = subtractScalarVector(calculateAverage(userY_sub),userY_sub);
+		
+		//After subtract maybe becomes all 0
+		double euc_x = euclideanNorm(userX_sub);
+		double euc_y = euclideanNorm(userY_sub);
+		if(euc_x==0||euc_y==0){
+			return -100;
+		}
+		
+		return innerProduct(userX_sub, userY_sub)/(euclideanNorm(userX_sub)*euclideanNorm(userY_sub));
+//		return innerProduct(userX, userY)/(euclideanNorm(userX)*euclideanNorm(userY));
+	}
+	
+	public static double calculatePearson(Map<Integer,Double> userX, Map<Integer,Double> userY, int nM) {
+		if(userX.isEmpty()||userY.isEmpty()){
+			return -100;
+		}
+		Map<Integer,Double> userX_sub = new HashMap<Integer,Double>(userX);
+		userX_sub = subtractScalarVector(calculateAverage(userX_sub),userX_sub);
+		Map<Integer,Double> userY_sub = new HashMap<Integer,Double>(userY);
+		userY_sub = subtractScalarVector(calculateAverage(userY_sub),userY_sub);
+		if(euclideanNorm(userX_sub)==0||euclideanNorm(userY_sub)==0){
+			return -100;
+		}
+		
+		
+//		double avg_x = calculateAverage(userX_sub);
+//		double avg_y = calculateAverage(userY_sub);
+    	Set<Integer> K = new HashSet<Integer>(userX.keySet());
+    	K.retainAll(userY.keySet());
+    	if(K.isEmpty()){
+    		return -100;
+    	}
+    	
+    	double rst_nume=0;
+    	double rst_deno_x=0;
+    	double rst_deno_y=0;
+    	for (int k : K) {
+//    		System.out.println("x: "+userX.get(k)+"; y:"+userY.get(k));
+    		rst_nume += (userX_sub.get(k))*(userY_sub.get(k));
+    		rst_deno_x += Math.pow(userX_sub.get(k), 2);
+    		rst_deno_y += Math.pow(userY_sub.get(k), 2);
+    	}
+    	if(rst_deno_x==0||rst_deno_y==0){
+    		return Double.MIN_VALUE;
+    	}
+		return rst_nume/((Math.sqrt(rst_deno_x)*Math.sqrt(rst_deno_y)));
 	}
     
     public static double calculateAverage(Map<Integer,Double> a) {

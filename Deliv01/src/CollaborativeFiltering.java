@@ -48,33 +48,34 @@ public class CollaborativeFiltering {
 		// Number of users and movies
 		int nU = userList.size();
 		int nM = movieList.size();
+		
 			
-		// Loop over to-be-predicted ratings
+		// Loop over to-be-predicted ratings predRatings.size()
 		System.out.println("Running predictions..");
-		for (int i=0; i<predRatings.size(); i++) {
+		for (int i=0; i< predRatings.size(); i++) {
 			 
 			// Inform progress
 			if (i%1000==0) {
 				System.out.println("Running predictions "+(i+1)+"/"+predRatings.size());
 			}
 			
-			double[] sim = new double[nU];
-			
 			
 			// Compute similarity with other users (tip: cosine similarity)
-			HashMap<Integer, Double> preuser_rating = predRatings.get(i).getUser().getRatings();
+			int premovie_index = predRatings.get(i).getMovie().getIndex();
+			int preuser_index = predRatings.get(i).getUser().getIndex();
+			
+			double[] sim = new double[nU];
+			HashMap<Integer, Double> preuser_rating = predRatings.get(i).getUser().getRatings();			
 			for(int j=0;j<nU;j++){				
-				if(j!=i){
+				if(j!=(predRatings.get(i).getUser().getIndex()-1) && userList.get(j).getRatings().containsKey(premovie_index)){
+//					System.out.println("Movie: "+ premovie_index+"; user:"+ j +";score:"+userList.get(j).getRatings().get(premovie_index));
 					sim[j] = Util.calculateCosine(preuser_rating, userList.get(j).getRatings(), nM);
-//					if(j==3597){
-//						System.out.println(Util.euclideanNorm(preuser_rating)*Util.euclideanNorm(userList.get(j).getRatings()));
-//						System.out.println(Util.innerProduct(preuser_rating, userList.get(j).getRatings()));
-//						System.out.println(Util.innerProduct(preuser_rating, userList.get(j).getRatings())/( Util.euclideanNorm(preuser_rating)*Util.euclideanNorm(userList.get(j).getRatings()) ));
-//					}
+//					sim[j] = Util.calculatePearson(preuser_rating, userList.get(j).getRatings(), nM);
+//					System.out.println("haha");
+//					System.out.println(sim[j]);
 				}else{
-					sim[j] = Double.MIN_VALUE;
+					sim[j] = -100;
 				}
-//				System.out.println("sim"+j+": "+sim[j]);
 			}
 			
 			// Hard-code size of neighborhood
@@ -83,33 +84,37 @@ public class CollaborativeFiltering {
 			// Construct weighted average
 			Sorter sorter = new Sorter(sim);
 			Integer[] user_index_list = sorter.createIndexArray(); //0 based
-//			for(int j=0;j<N;j++){
-//				System.out.println("sim"+j+": "+sim[j]);
-//			}
 			Arrays.sort(user_index_list, sorter.reversed());
-			System.out.println("After!");
-//			for(int j=0;j<N;j++){
-//				System.out.println("sim"+user_index_list[j]+": "+sim[user_index_list[j]]);
-//			}
-//			System.out.println();
-			System.out.println("sim[3597]"+": "+sim[3597]+"euc: " + Util.calculateAverage(userList.get(3597).getRatings()));
-//			System.out.println(userList.get(3597).getRatings().toString());
-			
-			double prediction_nume=0;
-			double prediction_deno=0;
-			int premovie_index = predRatings.get(i).getMovie().getIndex();
+
+			double prediction_nume=0.0;
+			double prediction_deno=0.0;
+			double sum_rating=0.0;
+			int no_effect_data=0;
 			for(int j=0;j<N;j++){
-				if(userList.get(user_index_list[j]).getRatings().containsKey(premovie_index)){
-					prediction_nume += sim[user_index_list[j]] * userList.get(user_index_list[j]).getRatings().get(premovie_index) ;
-				}				
-				prediction_deno += sim[user_index_list[j]] ;
+				int ind = user_index_list[j];
+//				System.out.println(sim[ind]);
+				if(sim[ind]!=-100){					
+//					System.out.println("User: "+ind+"; score:"+userList.get(ind).getRatings().get(premovie_index));
+//					System.out.println(sim[ind]+";  "+ userList.get(user_index_list[j]).getRatings().get(premovie_index));
+					sum_rating += userList.get(ind).getRatings().get(premovie_index);
+					prediction_nume += sim[ind] * userList.get(ind).getRatings().get(premovie_index);				
+					prediction_deno += sim[ind];
+					no_effect_data++;
+				}
+				
 			}
-			
-			double prediction = prediction_nume/prediction_deno;
-			System.out.println("rst"+i+" = "+prediction);
+			double prediction;
+			if(prediction_deno!=0){
+				prediction = prediction_nume/prediction_deno;
+			}else{
+				prediction = sum_rating/(double) no_effect_data;
+			}
+//			System.out.println(i);
 			// Set predicted rating
 			if(prediction<0.0)prediction=0.0;
-			if(prediction<5.0)prediction=5.0;
+			if(prediction>5.0)prediction=5.0;
+			if(Double.isNaN(prediction))prediction=0.0;
+//			System.out.println( "User " + preuser_index +" + Movie "+premovie_index+" = "+prediction);
 			predRatings.get(i).setRating(prediction);
 			
 		}
