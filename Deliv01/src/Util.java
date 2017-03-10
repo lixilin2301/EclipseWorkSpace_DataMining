@@ -11,7 +11,7 @@ public class Util {
 			return -100;
 		}
 		if(euc_x==0 || euc_y==0){
-			return 0;
+			return -100;
 		}
 		return innerProduct(userX_sub, userY_sub) / (euc_x * euc_y);
 	}
@@ -35,6 +35,32 @@ public class Util {
 		
 		return innerProduct(userX_sub, userY_sub) / (euc_x * euc_y);
 //		return innerProduct(userX, userY)/(euclideanNorm(userX)*euclideanNorm(userY));
+	}
+	
+	public static double calculatePearson_v2(Map<Integer,Double> userX_sub, Map<Integer,Double> userY_sub) {
+		if(userX_sub.isEmpty()||userY_sub.isEmpty()){
+			return -100;
+		}
+
+		Set<Integer> K = new HashSet<Integer>(userX_sub.keySet());
+    	K.retainAll(userY_sub.keySet());
+    	if(K.isEmpty()){
+    		return -100;
+    	}
+    	
+    	double rst_nume=0;
+    	double rst_deno_x=0;
+    	double rst_deno_y=0;
+    	for (int k : K) {
+//    		System.out.println("x: "+userX.get(k)+"; y:"+userY.get(k));
+    		rst_nume += (userX_sub.get(k))*(userY_sub.get(k));
+    		rst_deno_x += Math.pow(userX_sub.get(k), 2);
+    		rst_deno_y += Math.pow(userY_sub.get(k), 2);
+    	}
+    	if(rst_deno_x==0||rst_deno_y==0){
+    		return -100;
+    	}
+		return rst_nume/((Math.sqrt(rst_deno_x)*Math.sqrt(rst_deno_y)));
 	}
 	
 	public static double calculatePearson(Map<Integer,Double> userX, Map<Integer,Double> userY, int nM) {
