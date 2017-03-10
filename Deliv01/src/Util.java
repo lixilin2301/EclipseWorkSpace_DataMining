@@ -6,6 +6,16 @@ import java.util.Map;
 
 public class Util {
 	
+	public static double calculateCosine_v2(Map<Integer,Double> userX_sub, Map<Integer,Double> userY_sub, double euc_x, double euc_y) {
+		if(userX_sub.isEmpty()||userY_sub.isEmpty()){
+			return -100;
+		}
+		if(euc_x==0 || euc_y==0){
+			return 0;
+		}
+		return innerProduct(userX_sub, userY_sub) / (euc_x * euc_y);
+	}
+	
 	public static double calculateCosine(Map<Integer,Double> userX, Map<Integer,Double> userY, int nM) {
 		// Compute cosine similarity between two users
 		if(userX.isEmpty()||userY.isEmpty()){
@@ -19,11 +29,11 @@ public class Util {
 		//After subtract maybe becomes all 0
 		double euc_x = euclideanNorm(userX_sub);
 		double euc_y = euclideanNorm(userY_sub);
-		if(euc_x==0||euc_y==0){
-			return -100;
+		if(euc_x==0 || euc_y==0){
+			return 0;
 		}
 		
-		return innerProduct(userX_sub, userY_sub)/(euclideanNorm(userX_sub)*euclideanNorm(userY_sub));
+		return innerProduct(userX_sub, userY_sub) / (euc_x * euc_y);
 //		return innerProduct(userX, userY)/(euclideanNorm(userX)*euclideanNorm(userY));
 	}
 	
@@ -36,7 +46,7 @@ public class Util {
 		Map<Integer,Double> userY_sub = new HashMap<Integer,Double>(userY);
 		userY_sub = subtractScalarVector(calculateAverage(userY_sub),userY_sub);
 		if(euclideanNorm(userX_sub)==0||euclideanNorm(userY_sub)==0){
-			return -100;
+			return 0;
 		}
 		
 		
@@ -58,7 +68,7 @@ public class Util {
     		rst_deno_y += Math.pow(userY_sub.get(k), 2);
     	}
     	if(rst_deno_x==0||rst_deno_y==0){
-    		return Double.MIN_VALUE;
+    		return 0;
     	}
 		return rst_nume/((Math.sqrt(rst_deno_x)*Math.sqrt(rst_deno_y)));
 	}

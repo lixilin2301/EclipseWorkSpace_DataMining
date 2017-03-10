@@ -39,10 +39,10 @@ public class test{
 //				System.out.println(j);
 //			}
 //		}
-		HashMap<Integer, Double> rating = movieList.get(1654).getRatings();
-		for(Integer user_id:rating.keySet()){
-			System.out.println(rating.get(user_id));
-		}
-		
+		HashMap<Integer, Double> rating = movieList.get(836).getRatings();
+//		for(Integer user_id:rating.keySet()){
+//			System.out.println(rating.get(user_id));
+//		}
+		System.out.println(rating.get(2006));
 	}
 }
