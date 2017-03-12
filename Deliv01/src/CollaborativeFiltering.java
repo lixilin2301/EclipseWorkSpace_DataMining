@@ -43,6 +43,8 @@ public class CollaborativeFiltering {
 		predRatings.writeResultsFile("submission.csv");
 	}	
 	
+	
+	
 	public static RatingList predictRatings(UserList userList,
 			MovieList movieList, RatingList ratingList, RatingList predRatings) {
 
@@ -50,7 +52,7 @@ public class CollaborativeFiltering {
 		int nU = userList.size();
 		int nM = movieList.size();
 		
-		//Modeling biases
+		//Modeling biases 
 		double[] bias_user = new double[nU];
 		double[] bias_movie = new double[nM];
 		double miu=0.0;
@@ -59,7 +61,8 @@ public class CollaborativeFiltering {
 		}
 		miu = miu / ratingList.size();
 		
-		//Store some data to RAM
+		//Store subtracted rating data, Euclidean distance to RAM for speed
+		//After some optimization, the code could finish in few minutes with the cost of RAM
 		ArrayList<HashMap<Integer,Double>> sim_map = new  ArrayList<HashMap<Integer,Double>>();
 		ArrayList<HashMap<Integer,Double>> subratingList = new  ArrayList<HashMap<Integer,Double>>();
 		double[] eucList = new double[nU];
@@ -84,7 +87,8 @@ public class CollaborativeFiltering {
 				System.out.println("Running predictions "+(i+1)+"/"+predRatings.size());
 			}
 			
-			// Compute similarity with other users (tip: cosine similarity)
+			// Compute similarity with other users 
+			// Cosine similarity OR Pearson similarity can be chosen from
 			int premovie_index = predRatings.get(i).getMovie().getIndex()-1;
 			int preuser_index = predRatings.get(i).getUser().getIndex()-1;		
 			double[] sim = new double[nU];
@@ -116,6 +120,7 @@ public class CollaborativeFiltering {
 			Integer[] user_index_list = sorter.createIndexArray(); //0 based
 			Arrays.sort(user_index_list, sorter.reversed());
 			
+			//Calculate weighted prediction
 			double prediction_nume=0.0;
 			double prediction_deno=0.0;
 			double sum_rating=0.0;
@@ -131,6 +136,7 @@ public class CollaborativeFiltering {
 					no_effect_data++;
 				}				
 			}
+			//Check if the sum of prediction is zero
 			double prediction=0.0;
 			if(prediction_deno!=0){
 				prediction = prediction_nume/prediction_deno + (miu + bias_user[preuser_index] + bias_movie[premovie_index] );
