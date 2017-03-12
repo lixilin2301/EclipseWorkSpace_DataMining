@@ -52,13 +52,20 @@ public class NearestNeighbour {
 			ml.add(meas);
 		}
 		Collections.sort(ml);
+		
+		ArrayList<Integer> relation = new ArrayList<Integer>();
+		
 		int[] labels= new int[k+1];
 		for (int i = 0; i < k+1; i++) {
 			labels[i] = 0;
 		}
-		System.out.println(ml.get(0).getFeatureVector().getLabel());  
+//		System.out.println(ml.get(0).getFeatureVector().getLabel());  
 		for (int i = 0; i < k; i++) {
-			labels[ml.get(0).getFeatureVector().getLabel()]++;
+			int rst = ml.get(0).getFeatureVector().getLabel();
+			if(!relation.contains(rst)){
+				relation.add(rst);
+			}
+			labels[relation.indexOf(rst)]++;
 		}
 		int max = 0;
 		for (int i = 0; i < k+1; i++) {
@@ -67,6 +74,6 @@ public class NearestNeighbour {
 				label = i;
 			}
 		}
-		return label;
+		return relation.get(label);
 	}
 }
