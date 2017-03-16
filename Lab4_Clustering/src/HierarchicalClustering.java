@@ -81,5 +81,28 @@ public class HierarchicalClustering {
 	 */
 	public void update() {
 		// add code here
+		double minDis = 10000;
+		int merge1 = -1;
+		int merge2 = -1;
+		if (getClusterSize() > k) {
+			for (int i = 0; i < getClusterSize(); i++) {
+				Cluster c1 = getCluster(i);
+				for (int j = i+1; j < getClusterSize(); j++) {
+					Cluster c2 = getCluster(j);
+					if (getCluster(i) != null && getCluster(j) != null) {
+//						if (c1.meanDistanceTo(c2) < minDis) {
+//							minDis = c1.meanDistanceTo(c2);			// meanDistance
+						if (c1.minDistanceTo(c2) < minDis) {
+							minDis = c1.minDistanceTo(c2);			// minDistance
+							merge1 = i;
+							merge2 = j;
+						}
+					}
+				}
+			}
+		}
+
+		getCluster(merge1).addAll(getCluster(merge2));
+		getClusters().remove(getCluster(merge2));
 	}
 }
