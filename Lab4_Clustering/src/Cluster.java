@@ -182,6 +182,9 @@ public class Cluster extends ArrayList<FeatureVector> {
 		
 		double rss = 0.0;
 		// add code here
+		for(FeatureVector fv:this){
+			rss += Math.pow(fv.distance(this.centroid), 2);
+		}
 		return rss / size();
 	}
 }

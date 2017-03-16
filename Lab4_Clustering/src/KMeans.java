@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class KMeans {
 	/**
@@ -16,7 +17,7 @@ public class KMeans {
 	 * The unclustered data.
 	 */
 	private Cluster data;
-
+	private ArrayList<Integer> init_no;
 	/**
 	 * Constructor.
 	 * @param k The number of clusters to detect.
@@ -26,7 +27,8 @@ public class KMeans {
 		this.k = k;
 		clusters = new ArrayList<Cluster>();
 		data = new Cluster();
-
+		init_no = new ArrayList<Integer>();
+		
 		readData(fileName);
 	}
 
@@ -70,8 +72,20 @@ public class KMeans {
 	/**
 	 * Adds a new init point at a random location in the dataset.
 	 */
+	
 	private void addInitPoint() {
 		// add code here
+		Random random = new Random();
+		Cluster cluster_to_save = new Cluster();
+		int no_to_save = random.nextInt(data.size());
+		// Check if the number has been involved 
+		while(init_no.contains(no_to_save)){
+			no_to_save = random.nextInt(data.size());
+		}
+		init_no.add(no_to_save);
+		// Save to Cluster
+		cluster_to_save.add(data.get(no_to_save));
+		clusters.add(cluster_to_save);
 	}
 	
 	/**
@@ -89,5 +103,33 @@ public class KMeans {
 	 */
 	public void update() {
 		// add code here
+		ArrayList<FeatureVector> centroids = new ArrayList<FeatureVector>();
+		
+		//Check initialization
+		if(clusters.isEmpty()){
+			for(int i=0;i<k;i++){
+				this.addInitPoint();
+			}
+		}
+
+		//Add centroid point and clean Cluster
+		for(int i=0;i<k;i++){
+				centroids.add(clusters.get(i).centroid());						
+		}
+		clearClusters();		
+		//Assign each point to the closest clusters
+		for(FeatureVector fv:data){
+			double min_distance = Double.MAX_VALUE;
+			int min_centroid_no = -1;
+			for(int j=0;j<k;j++){
+				double tmp_distance = fv.distance(centroids.get(j));
+				if(tmp_distance<min_distance){
+					min_distance = tmp_distance;
+					min_centroid_no = j;
+				}
+			}
+			clusters.get(min_centroid_no).add(fv);
+		}
+		
 	}
 }
