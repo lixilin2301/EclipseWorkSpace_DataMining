@@ -5,8 +5,8 @@ public class main {
 	private static void hierarchical() {
 		// add code here 
 		int k = 3;
-		HierarchicalClusteringPlotter hcp = new HierarchicalClusteringPlotter(k ,"data/cluster.txt");
-		HierarchicalClusteringPlotter hcp2 = new HierarchicalClusteringPlotter(k ,"data/cluster_lines.txt");
+//		HierarchicalClusteringPlotter hcp = new HierarchicalClusteringPlotter(k ,"data/cluster.txt");
+		HierarchicalClusteringPlotter hcp = new HierarchicalClusteringPlotter(k ,"data/cluster_lines.txt");
 		
 	}
 	
@@ -68,8 +68,8 @@ public class main {
 //		hierarchical();
 //		hierarchicalDigits();
 		kmeans();
-		kmeansTuneK();
-		kmeansDigits();
+//		kmeansTuneK();
+//		kmeansDigits();
 	}
 
 }

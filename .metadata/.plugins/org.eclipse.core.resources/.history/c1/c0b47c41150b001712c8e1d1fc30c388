@@ -6,7 +6,7 @@ public class main {
 		// add code here 
 		int k = 3;
 		HierarchicalClusteringPlotter hcp = new HierarchicalClusteringPlotter(k ,"data/cluster.txt");
-		HierarchicalClusteringPlotter hcp2 = new HierarchicalClusteringPlotter(k ,"data/cluster_lines.txt");
+//		HierarchicalClusteringPlotter hcp = new HierarchicalClusteringPlotter(k ,"data/cluster_lines.txt");
 		
 	}
 	
@@ -67,8 +67,8 @@ public class main {
 	public static void main(String[] args) {
 //		hierarchical();
 //		hierarchicalDigits();
-		kmeans();
-		kmeansTuneK();
+//		kmeans();
+//		kmeansTuneK();
 		kmeansDigits();
 	}
 

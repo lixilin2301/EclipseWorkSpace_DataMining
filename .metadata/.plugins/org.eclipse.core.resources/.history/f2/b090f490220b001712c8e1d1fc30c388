@@ -90,10 +90,10 @@ public class HierarchicalClustering {
 				for (int j = i+1; j < getClusterSize(); j++) {
 					Cluster c2 = getCluster(j);
 					if (getCluster(i) != null && getCluster(j) != null) {
-						if (c1.meanDistanceTo(c2) < minDis) {
-							minDis = c1.meanDistanceTo(c2);			// meanDistance
-//						if (c1.minDistanceTo(c2) < minDis) {
-//							minDis = c1.minDistanceTo(c2);			// minDistance
+//						if (c1.meanDistanceTo(c2) < minDis) {
+//							minDis = c1.meanDistanceTo(c2);			// meanDistance
+						if (c1.minDistanceTo(c2) < minDis) {
+							minDis = c1.minDistanceTo(c2);			// minDistance
 							merge1 = i;
 							merge2 = j;
 						}
