@@ -91,7 +91,15 @@ public class APriori {
 			}
 		} else {
 			// add code here
-			
+			StringSet[] fC_array = filteredCandidates.toArray(new StringSet[filteredCandidates.size()]);
+			for(int i=0;i<(fC_array.length-1);i++){
+				for(int j=i+1;j<fC_array.length;j++){
+					StringSet union = new StringSet(fC_array[i]);
+					union.addAll(fC_array[j]);					
+					if(union.size()==k)
+						candidates.add(union);				
+				}
+			}
 		}
 
 		return candidates;
@@ -109,6 +117,17 @@ public class APriori {
 
 		// add code here		
 
+		for(Set<String> basket: baskets){
+			Set<StringSet> subsets = getSubsets(basket,k);
+			for(StringSet ss : subsets){
+				if(candidates.contains(ss)){
+					if(!candidatesCount.containsKey(ss))
+						candidatesCount.put(ss, 1);
+					else
+						candidatesCount.put(ss, candidatesCount.get(ss)+1);
+				}
+			}
+		}
 		return candidatesCount;
 	}
 
@@ -123,7 +142,10 @@ public class APriori {
 		Set<StringSet> filteredCandidates = new HashSet<StringSet>();
 
 		// add code here
-
+		for(StringSet ss : candidatesCount.keySet()){
+			if(candidatesCount.get(ss)>=supportThreshold)
+				filteredCandidates.add(ss);
+		}
 		return filteredCandidates;
 	}
 
@@ -137,7 +159,16 @@ public class APriori {
 		Set<StringSet> filteredCandidates = null;
 
 		// add code here
+		for(int i=1;i<k+1;i++){
+			Set<StringSet> candidates = this.constructCandidates(filteredCandidates, i);
+			if(i!=1){
+				System.out.print("\n"+"Candidate:");
+			for(StringSet ss:candidates)
+				System.out.print(ss.toString());}
+			Map<StringSet, Integer> candidatesCount = this.countCandidates(candidates, i);
+			filteredCandidates = this.filterCandidates(candidatesCount);
 
+		}
 		return filteredCandidates;
 	}
 

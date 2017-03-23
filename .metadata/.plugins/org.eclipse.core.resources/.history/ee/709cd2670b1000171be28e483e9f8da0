@@ -1,0 +1,22 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Set;
+
+public class main {
+
+	public static void main(String[] args) throws IOException {
+		// add code here
+		APriori ap = new APriori(3);
+		try (BufferedReader br = new BufferedReader(new FileReader("input_example/basket.txt"))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		    	ap.addBasket(line);
+		    }
+		}
+		Set<StringSet> fs = ap.getFrequentSets(2);
+		for(StringSet ss:fs)
+			System.out.println(ss.toString());
+	}
+
+}

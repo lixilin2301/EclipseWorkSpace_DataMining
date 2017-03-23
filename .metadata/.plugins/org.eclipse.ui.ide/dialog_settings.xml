@@ -5,6 +5,7 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\熙林\Documents\EclipseWorkSpace_DataMining\Deliv02"/>
 			<item value="C:\Users\熙林\Documents\EclipseWorkSpace_DataMining\Lab5_FrequentItemsets"/>
 			<item value="C:\Users\熙林\Documents\EclipseWorkSpace_DataMining\Lab3_LinkAnalysis"/>
 			<item value="C:\Users\熙林\Documents\EclipseWorkSpace_DataMining\Lab2_Classification"/>
