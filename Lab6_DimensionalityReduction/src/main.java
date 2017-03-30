@@ -45,7 +45,7 @@ public class main {
 		m = Matrix.readData("data/matrix.txt");
 		List<Matrix> eigenvectors = new ArrayList<Matrix>();
 		eigenvectors = powerIteration(m, 2, 10e-5);
-		System.out.println(eigenvectors);
+		System.out.println("Power:\n"+eigenvectors.toString());
 	}
 
 	/**
@@ -54,6 +54,18 @@ public class main {
 	 */
 	public static void pca() {
 		// add code here
+		// Original data 
+		Matrix X = new Matrix();
+		X = Matrix.readData("data/gaussian.txt");
+		PCAPlotter pcap = new PCAPlotter();
+		pcap.plotData(X);
+		
+		// Covariance and Eigenvector
+		Matrix X_minus = X.subtractRow( X.meanRow() );
+		Matrix cov = (X_minus.transpose().dot(X_minus)).multiply( 1/(double)X.rows() ) ;
+		List<Matrix> eigenvectors_cov = powerIteration(cov, 2, 10e-5);
+		pcap.plotEigenvectors(eigenvectors_cov);
+		System.out.println("\nPCA:\n"+eigenvectors_cov.toString());
 	}
 	
 	/**
@@ -62,12 +74,21 @@ public class main {
 	 */
 	public static void pcaFaces() {
 		// add code here
+		Matrix images = Matrix.readData("data/faces.txt");
+		Matrix images_minus = images.subtractRow( images.meanRow() );
+		Matrix cov = (images_minus.transpose().dot(images_minus)).multiply( 1/(double)images.rows() );
+		List<Matrix> eigenvectors_cov = powerIteration(cov, 10, 10e-5);
+		
+		for(int i=0;i<10;i++){
+			ImageFrame IF = new ImageFrame("Principal Component_"+i);
+			IF.showImage(eigenvectors_cov.get(i), 32, 32);
+		}
 	}
 
 	public static void main(String[] args) {
 		powerIterationTest();
-		//pca();
-		//pcaFaces();
+		pca();
+		pcaFaces();
 	}
 
 }

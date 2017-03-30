@@ -283,7 +283,11 @@ public class Matrix extends ArrayList<Double> {
     	Matrix result = new Matrix(rows(), cols());
     	
     	// add code here
-    	
+    	for(int rr=0;rr<this.rows();rr++){
+    		for(int c=0;c<this.cols();c++){
+    			result.set(rr, c, this.get(rr, c)-r.get(c));
+    		}
+    	}
     	
     	return result;
     }
