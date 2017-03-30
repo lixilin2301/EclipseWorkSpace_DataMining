@@ -10,17 +10,19 @@ public class main {
 		// add code here
 		// APriori Part
 		APriori ap = new APriori(3);
+		System.out.println("APrior:");
 		readData(ap, "input_example/basket.txt");
 		Set<StringSet> fs = ap.getFrequentSets(2);
-		System.out.print("\n"+"Result: ");
+		System.out.print("\n"+"Filtered: ");
 		for(StringSet ss:fs)
 			System.out.print(ss.toString());
 		
 		//PCY Part
 		PCY pcy = new PCY(3,256);
+		System.out.println("\n\n"+"PCY:");
 		readData(pcy, "input_example/basket.txt");
 		Set<StringSet> fsp = pcy.getFrequentSets(2);
-		System.out.print("\n"+"Result: ");
+		System.out.print("\n"+"Filtered: ");
 		for(StringSet ss:fsp)
 			System.out.print(ss.toString());
 	}

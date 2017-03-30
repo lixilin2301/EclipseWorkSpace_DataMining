@@ -50,10 +50,10 @@ public class PCY extends APriori {
 			StringSet[] fC_array = filteredCandidates.toArray(new StringSet[filteredCandidates.size()]);
 			for(int i=0;i<(fC_array.length-1);i++){
 				for(int j=i+1;j<fC_array.length;j++){
-					
 					StringSet union = new StringSet(fC_array[i]);
 					union.addAll(fC_array[j]);	
 					int hash = (union.hashCode()%bucketSize+bucketSize)%bucketSize;
+					// Modification -------------------------------------------------- 
 					if(union.size()==k && buckets.get(hash)>=supportThreshold)
 						candidates.add(union);				
 				}
@@ -85,12 +85,14 @@ public class PCY extends APriori {
 
 		// add code here
 		for(Set<String> basket: baskets){
+			//Modification ----------------------------------------------start
 			Set<StringSet> subsets_1 = getSubsets(basket,k);
 			Set<StringSet> subsets_2 = getSubsets(basket,k+1);
 			for(StringSet ss : subsets_2){
 				int hash = (ss.hashCode()%bucketSize+bucketSize)%bucketSize;
 				buckets.set(hash,buckets.get(hash)+1);
 			}
+			//Modification ----------------------------------------------end
 			for(StringSet ss : subsets_1){
 				if(candidates.contains(ss)){
 					if(!candidatesCount.containsKey(ss))

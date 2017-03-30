@@ -58,11 +58,10 @@ public class Util {
 	}
 	
 	public static void subtractRating(Map<Integer,Double> rating, double avg){
-		//Map<Integer,Double> sub_rating = new HashMap<Integer,Double>(rating);
+		// Subtract average from each rating
 		for(Integer i : rating.keySet()){
 			rating.put(i, rating.get(i)-avg);
 		}
-//		return sub_rating;
 	}
 	
 	public static double updateQuf(ArrayList<User> Ru, Map<Integer,Map<Integer,Double>> Q, 
@@ -70,15 +69,19 @@ public class Util {
 		// Compute update in Q for user u and factor f
 
 		int movie_total_num = P.size();
+		// Denominator and numerator for updated Q
 		double updated_Quf_deno = 0.0;
 		double updated_Quf_nume = 0.0;
 		for(int i=0;i<movie_total_num;i++){
+			// Check if user rates movie
 			if(Ru.get(u).getRatings().containsKey(i)){
+				// Compute the derivative for the element
 				updated_Quf_deno += Math.pow( P.get(i).get(f), 2);
 				double Ci = innerProduct(P.get(i),Q.get(u)) - Q.get(u).get(f)*P.get(i).get(f);
 				updated_Quf_nume += P.get(i).get(f)*(Ru.get(u).getRatings().get(i)-Ci);
 			}
 		}
+		// Add regularization (lambda) when computing update to avoid overfitting
 		double updated_Quf = updated_Quf_nume/(updated_Quf_deno + lambdaQ);	
 		return updated_Quf;
 	}
@@ -87,15 +90,19 @@ public class Util {
 			Map<Integer,Map<Integer,Double>> P, int m, int f, int nF, double lambdaP) {
 		// Compute update in P for movie m and factor f
 		int user_total_num = Q.size();
+		// Denominator and numerator for updated P
 		double updated_Pmf_deno = 0.0;
 		double updated_Pmf_nume = 0.0;		
 		for(int i=0;i<user_total_num;i++){
+			// Check if none
 			if(Rm.get(m).getRatings().containsKey(i)){
+				// Compute the derivative for the element
 				updated_Pmf_deno += Math.pow( Q.get(i).get(f), 2);
 				double Ci = innerProduct(Q.get(i),P.get(m)) - Q.get(i).get(f)*P.get(m).get(f);
 				updated_Pmf_nume += Q.get(i).get(f)*(Rm.get(m).getRatings().get(i)-Ci);
 			}
 		}
+		// Add regularization (lambda) when computing update to avoid overfitting
 		double update_Pmf = updated_Pmf_nume/(updated_Pmf_deno + lambdaP);
 		return update_Pmf;
 	}	
