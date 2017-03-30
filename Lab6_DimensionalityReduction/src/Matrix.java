@@ -157,7 +157,15 @@ public class Matrix extends ArrayList<Double> {
 		Matrix result = new Matrix(this.rows(), other.cols());
 
 		// add code here
-
+		for (int r = 0; r < this.rows(); r++) {
+			for (int c = 0; c < other.cols(); c++) {
+				double tmpSum = 0.0;
+				for (int k = 0; k < this.cols(); k++) {
+					tmpSum += this.get(r, k) * other.get(k, c);
+				}
+				result.set(r, c, tmpSum);
+			}
+		}
 		return result;
 	}
 
@@ -170,7 +178,12 @@ public class Matrix extends ArrayList<Double> {
 		Matrix result = (Matrix) this.clone();
 
 		// add code here
-
+		for (int r = 0; r < result.rows(); r++) {
+			for (int c = 0; c < result.cols(); c++) {
+				result.set(r,c,this.get(r,c) * scalar);
+			}
+		}
+		
 		return result;
 	}
 
@@ -185,6 +198,11 @@ public class Matrix extends ArrayList<Double> {
 		Matrix result = new Matrix(rows(), cols());
 		
 		// add code here
+		for (int r = 0; r < result.rows(); r++) {
+			for (int c = 0; c < result.cols(); c++) {
+				result.set(r,c,this.get(r,c) + other.get(r, c));
+			}
+		}
 
 		return result;
 	}
@@ -197,7 +215,12 @@ public class Matrix extends ArrayList<Double> {
 		Matrix result = new Matrix(cols(), rows());
      
 		// add code here
-        
+		for (int r = 0; r < result.rows(); r++) {
+			for (int c = 0; c < result.cols(); c++) {
+				result.set(r,c,this.get(c,r));
+			}
+		}
+		
         return result;
     }
     
@@ -209,6 +232,11 @@ public class Matrix extends ArrayList<Double> {
     	double result = 0.0;
     	
     	// add code here
+    	for (int r = 0; r < this.rows(); r++) {
+			for (int c = 0; c < this.cols(); c++) {
+				result += Math.pow(this.get(r, c), 2);
+			}
+		}
     	
     	return Math.sqrt(result);
     }
@@ -232,6 +260,13 @@ public class Matrix extends ArrayList<Double> {
     	Matrix mean = new Matrix(1, cols());
     	
     	// add code here
+    	for (int c = 0; c < this.cols(); c++) {
+    		double sum = 0.0;
+    		for (int r = 0; r < this.rows(); r++) {
+				sum += this.get(r, c);
+			}
+    		mean.set(0, c, sum / this.rows());
+		}
     			
     	return mean;
     }
@@ -248,6 +283,7 @@ public class Matrix extends ArrayList<Double> {
     	Matrix result = new Matrix(rows(), cols());
     	
     	// add code here
+    	
     	
     	return result;
     }

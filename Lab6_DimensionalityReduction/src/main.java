@@ -19,6 +19,19 @@ public class main {
 		List<Matrix> eigenvectors = new ArrayList<Matrix>();
 		
 		// add code here
+		Matrix v = new Matrix(m.rows(), 1, 1);
+		for (int i = 0; i < nrVectors; i++) {
+			double error = 100;
+			while (error > e) {
+				Matrix v2 = m.dot(v).multiply(1 / m.dot(v).norm());
+//				System.out.println(v2);
+				error = Math.abs(v.norm() - v2.norm());
+				v = v2;
+			}
+			eigenvectors.add(v);
+			double lambda = v.transpose().dot(m).dot(v).get(0,0);
+			m = m.add(v.dot(v.transpose()).multiply(-lambda));
+		}
 		
 		return eigenvectors;
 	}
@@ -28,6 +41,11 @@ public class main {
 	 */
 	public static void powerIterationTest() {
 		// add code here
+		Matrix m = new Matrix();
+		m = Matrix.readData("data/matrix.txt");
+		List<Matrix> eigenvectors = new ArrayList<Matrix>();
+		eigenvectors = powerIteration(m, 2, 10e-5);
+		System.out.println(eigenvectors);
 	}
 
 	/**
@@ -47,7 +65,7 @@ public class main {
 	}
 
 	public static void main(String[] args) {
-		//powerIterationTest();
+		powerIterationTest();
 		//pca();
 		//pcaFaces();
 	}
